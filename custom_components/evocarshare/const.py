@@ -10,6 +10,13 @@ LONGITUDE = "longitude"
 
 CONF_ZONE = "zone"
 CONF_RADIUS = "radius"
+CONF_TRACKER_ID = "tracker_id"
+CONF_SEARCH_MODE = "search_mode"
+CONF_SEARCH_VALUE = "search_value"
+
+SEARCH_MODE_RADIUS = "radius"
+SEARCH_MODE_COUNT = "count"
+
 ATTR_COUNT = "count"
 ATTR_CLOSEST = "closest"
 ZONE_ID_HOME = "home"

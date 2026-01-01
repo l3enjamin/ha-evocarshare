@@ -16,7 +16,7 @@ from .coordinator import EvoCarShareUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__).setLevel(logging.DEBUG)
 
-PLATFORMS = [Platform.SENSOR]
+PLATFORMS = [Platform.SENSOR, Platform.DEVICE_TRACKER]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

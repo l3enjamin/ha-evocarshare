@@ -3,7 +3,9 @@ from zlib import compress, decompress
 
 from homeassistant.core import HomeAssistant
 
-from .const import LATITUDE, LONGITUDE
+from evocarshare import GpsCoord
+
+from .const import CONF_TRACKER_ID, CONF_ZONE, LATITUDE, LONGITUDE
 
 
 def get_zone_config(hass: HomeAssistant):
@@ -25,6 +27,28 @@ def get_zone_by_name(hass: HomeAssistant, name: str):
         if v["name"] == name:
             return v
     raise KeyError(name)
+
+
+def get_location(hass: HomeAssistant, config_data: dict) -> GpsCoord | None:
+    """Return GpsCoord for a given config data (zone or tracker)."""
+    if CONF_ZONE in config_data:
+        zone_id = config_data[CONF_ZONE]
+        target_zone = get_zone_config(hass)[zone_id]
+        return GpsCoord(
+            target_zone[LATITUDE],
+            target_zone[LONGITUDE],
+        )
+    elif CONF_TRACKER_ID in config_data:
+        tracker_id = config_data[CONF_TRACKER_ID]
+        state = hass.states.get(tracker_id)
+        if state is None:
+            return None
+        lat = state.attributes.get(LATITUDE)
+        lon = state.attributes.get(LONGITUDE)
+        if lat is None or lon is None:
+            return None
+        return GpsCoord(lat, lon)
+    return None
 
 
 def obscure(s: str) -> str:

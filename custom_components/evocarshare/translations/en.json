@@ -2,11 +2,29 @@
     "config": {
         "step": {
             "user": {
+                "menu_options": {
+                    "zone": "Configure by Zone",
+                    "tracker": "Configure by Device Tracker"
+                }
+            },
+            "zone": {
                 "data": {
                     "zone": "Zone",
                     "radius": "Search Radius (in meters)"
                 }
+            },
+            "tracker": {
+                "data": {
+                    "tracker_id": "Device Tracker Entity",
+                    "search_mode": "Search Mode",
+                    "search_value": "Limit (Count) or Distance (Meters)"
+                }
             }
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "dist": "Invalid value",
+            "unknown": "Unexpected error"
         }
     }
 }
