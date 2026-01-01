@@ -21,13 +21,14 @@ from .const import (
     ATTR_COUNT,
     CONF_RADIUS,
     CONF_ZONE,
+    CONF_TRACKER_ID,
     COORD,
     DOMAIN,
     LATITUDE,
     LONGITUDE,
 )
 from .coordinator import EvoCarShareUpdateCoordinator
-from .helpers import get_zone_config
+from .helpers import get_zone_config, get_location
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -56,10 +57,27 @@ async def async_setup_entry(
     """Set up EvoCarShare sensor from config entry."""
 
     coordinator: EvoCarShareUpdateCoordinator = hass.data[DOMAIN][COORD]
-    async_add_entities([
-        EvoProximityCountSensor(coordinator, entry, COUNT_SENSOR),
-        EvoClosestDistanceSensor(coordinator, entry, CLOSEST_SENSOR),
-    ])
+
+    # Check if we are in legacy mode (Zone) or new mode (Tracker)
+    # The request doesn't explicitly ask to modify sensors for new mode,
+    # but to be nice, we can support sensors if it makes sense.
+    # The new mode is about creating device trackers.
+    # However, if the user configures a tracker, the old code might break if we don't handle it.
+
+    if CONF_ZONE in entry.data:
+        async_add_entities([
+            EvoProximityCountSensor(coordinator, entry, COUNT_SENSOR),
+            EvoClosestDistanceSensor(coordinator, entry, CLOSEST_SENSOR),
+        ])
+
+    # If using CONF_TRACKER_ID, we might want to skip these sensors or adapt them.
+    # The sensors rely on CONF_ZONE and CONF_RADIUS.
+    # If I adapt them, I need to make sure names/IDs are unique.
+    # Given the request is specifically about "show all the vehicles as device trackers",
+    # I will skip creating these sensors for the tracker-based config to avoid confusion/errors,
+    # unless I'm sure they are wanted.
+    # But wait, existing code assumes CONF_ZONE exists in `__init__` and `_handle_coordinator_update`.
+    # It's safer to only create them if CONF_ZONE is present.
 
 
 class EvoProximityCountSensor(CoordinatorEntity, SensorEntity):
