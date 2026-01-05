@@ -111,7 +111,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         DATA_SCHEMA = vol.Schema({
             vol.Required(CONF_TRACKER_ID): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain="device_tracker")
+                selector.EntitySelectorConfig(domain=["device_tracker", "person", "zone"])
             ),
             vol.Required(CONF_SEARCH_MODE, default=SEARCH_MODE_COUNT): selector.SelectSelector(
                 selector.SelectSelectorConfig(
