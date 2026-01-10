@@ -81,14 +81,14 @@ class EvoVehicleTracker(CoordinatorEntity, TrackerEntity):
     def latitude(self) -> float | None:
         """Return latitude value of the device."""
         if self._vehicle:
-            return self._vehicle.location.lat
+            return self._vehicle.location.latitude
         return None
 
     @property
     def longitude(self) -> float | None:
         """Return longitude value of the device."""
         if self._vehicle:
-            return self._vehicle.location.lon
+            return self._vehicle.location.longitude
         return None
 
     @property
@@ -226,13 +226,13 @@ class EvoSpecificVehicleTracker(CoordinatorEntity, TrackerEntity):
     @property
     def latitude(self) -> float | None:
         if self._is_available and self._vehicle:
-            return self._vehicle.location.lat
+            return self._vehicle.location.latitude
         return None
 
     @property
     def longitude(self) -> float | None:
         if self._is_available and self._vehicle:
-            return self._vehicle.location.lon
+            return self._vehicle.location.longitude
         return None
 
     @property
